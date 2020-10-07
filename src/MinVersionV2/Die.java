@@ -1,3 +1,5 @@
+package MinVersionV2;
+
 import java.util.Random;
 
 class Die {

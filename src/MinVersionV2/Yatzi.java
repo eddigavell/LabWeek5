@@ -1,3 +1,5 @@
+package MinVersionV2;
+
 import java.util.Scanner;
 
 
@@ -42,7 +44,7 @@ class Yatzi {
     public static void main(String[] args) {
         boolean gameIsStillRunning = true;
         int gameTurn = 1;
-        System.out.println("Welcome to Yatzi!");
+        System.out.println("Welcome to MinVersionV2.Yatzi!");
         createFiveDices();
         Scanner sc = new Scanner(System.in);
         while (gameIsStillRunning && gameTurn <= 3) {

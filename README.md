@@ -1,2 +1,2 @@
 # LabWeek5
-Yatzi - Educational material for KYH.
+MinVersionV2.Yatzi - Educational material for KYH.
