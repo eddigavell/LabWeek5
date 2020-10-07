@@ -7,7 +7,11 @@ class Die {
     private int dieValue;
 
     Die() {
-        this.dieValue = randomInt.nextInt(6)+1;
+        this.dieValue = randomValueBetweenOneToSix();
+    }
+
+    int randomValueBetweenOneToSix() {
+        return randomInt.nextInt(6)+1;
     }
 
     int getDieValue() {
@@ -15,7 +19,7 @@ class Die {
     }
 
     void rollDie() {
-        this.dieValue = randomInt.nextInt(6)+1;
+        this.dieValue = randomValueBetweenOneToSix();
     }
 
     void setDieValue(int dieValue) {
