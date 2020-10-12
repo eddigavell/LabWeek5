@@ -7,12 +7,10 @@ public class YatziMain {
     private static int gameTurns = 1;
     static Scanner sc = new Scanner(System.in);
 
-
     public static void main(String[] args) {
         System.out.println("Hello! Do you want to play a game of Yatzi? (type y for start, rules to read the rules, hacks to test to auto generate Yatzi and anything else for no)");
         switch (sc.next()) {
             case "y" -> gameIsOn();
-            case "rules" -> Rules.printRules();
             case "hacks" -> gameIsOnHax();
         }
     }
@@ -41,18 +39,32 @@ public class YatziMain {
         }
     }
 
-    public static void notYatzi() {
-        if (gameTurns != 3) {
-            System.out.println("Want to throw again?");
-            if (sc.next().equals("y")) {
-                gameTurns++;
-                gameIsOn();
+    static boolean isItYatzi(Dices[] dices) {
+        for (int i = 1; i < dices.length; i++) {
+            if (dices[i].value != dices[i - 1].value) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void nextRound() {
+        if (!isItYatzi(ds)) {
+            if (gameTurns != 3) {
+                System.out.println("Want to throw again?");
+                if (sc.next().equals("y")) {
+                    gameTurns++;
+                    gameIsOn();
+                } else {
+                    System.out.println("See you another time!");
+                    System.exit(0);
+                }
             } else {
-                System.out.println("See you another time!");
-                System.exit(0);
+                gameOver();
             }
         } else {
-            gameOver();
+            System.out.println("Wowowowow, you got yatzi in " + ds[0].value + "'s!!!!!");
+            System.exit(0);
         }
     }
 
@@ -64,7 +76,7 @@ public class YatziMain {
             }
             rollDicesAlwaysYatzi();
             printDices();
-            checkIfYatzi();
+            nextRound();
         }
     }
 
@@ -76,26 +88,8 @@ public class YatziMain {
             }
             rollDices();
             printDices();
-            checkIfYatzi();
+            nextRound();
         }
-    }
-
-    public static void checkIfYatzi() {
-        boolean isItAYatzi = true;
-        for (int i = 1; i < ds.length; i++) {
-            if (ds[i].value != ds[i - 1].value) {
-                isItAYatzi = false;
-                break;
-            }
-        }
-
-        if (isItAYatzi) {
-            System.out.println("Wowowowow, you got yatzi in " + ds[0].value + "'s!!!!!");
-            System.exit(0);
-        } else {
-            notYatzi();
-        }
-
     }
 
     public static void gameOver(){
