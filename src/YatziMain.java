@@ -1,5 +1,3 @@
-package Marco;
-
 import java.util.Scanner;
 
 class YatziMain {

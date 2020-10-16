@@ -1,5 +1,3 @@
-package Marco;
-
 class Die {
     private int value;
 
