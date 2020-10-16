@@ -1,25 +1,30 @@
 package Marco;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class YatziTest {
+class YatziTest {
+    Die[] die = new Die[5];
 
     @Test
     void isYatziWhenAllDiceMatches() {
-        Dices[] dice = new Dices[5];
-        for(Dices die: dice) {
-            die.value = 6;
+        for (int i= 0; i<5; i++) {
+            die[i] = new Die();
+            die[i].setDieValue(6);
         }
-        //Assert something?
+        assertTrue(YatziMain.checkIfYatzi(die));
     }
 
     @Test
     void isNotYatziWhenOneDieIsNotMatchingTheOther() {
-        Dices[] dice = new Dices[5];
-        for(Dices die: dice) {
-            die.value = 6;
+        for (int i=0; i<5; i++) {
+            die[i] = new Die();
+            if (i == 4 ) {
+                die[i].setDieValue(1);
+            } else {
+                die[i].setDieValue(6);
+            }
         }
-        dice[5].value = 1;
-        //Assert something?
+        assertFalse(YatziMain.checkIfYatzi(die));
     }
 }

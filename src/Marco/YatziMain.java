@@ -2,44 +2,64 @@ package Marco;
 
 import java.util.Scanner;
 
-public class YatziMain {
-    static Dices[] ds = new Dices[5];
-    private static int gameTurns = 1;
+class YatziMain {
+    private int gameTurns;
     static Scanner sc = new Scanner(System.in);
+    static Die[] ds = new Die[5];
 
-    public static void main(String[] args) {
-        System.out.println("Hello! Do you want to play a game of Yatzi? (type y for start, rules to read the rules, hacks to test to auto generate Yatzi and anything else for no)");
-        switch (sc.next()) {
-            case "y" -> gameIsOn();
-            case "hacks" -> gameIsOnHax();
-        }
+    YatziMain(int gameMode) {
+        gameTurns=1;
+        createDie();
+        rollDie(gameMode);
+        gameIsOn(gameMode);
     }
 
-    static void createDices() {
+    void createDie(){
         for (int d = 0; d < 5; d++) {
-            ds[d] = new Dices();
+            ds[d] = new Die();
         }
     }
 
-    static void rollDices() {
-        for (Dices die: ds) {
-            die.diceRoll();
+    void rollDie(int gameMode) {
+        if (gameMode == 1) {
+            for (Die die: ds) {
+                die.dieRoll();
+            }
+        } else {
+            for (Die die: ds) {
+                die.setDieValue(6);
+            }
         }
     }
 
-    static void rollDicesAlwaysYatzi() {
-        for(Dices die: ds) {
-            die.value = 6;
+    void rollDie() {
+        for (Die die: ds) {
+            die.dieRoll();
         }
     }
 
-    static void printDices() {
-        for (Dices die: ds) {
-            System.out.println(die.getString());
+    void printDie() {
+        int dieNumber = 1;
+        for (Die die: ds) {
+            System.out.println("Die " + dieNumber + ": shows a " + die.value);
+            dieNumber++;
         }
     }
 
-    static boolean isItYatzi(Dices[] dices) {
+    void gameIsOn(int gameMode) {
+        if (gameMode == 1 && gameTurns == 1) {
+            System.out.println("Welcome to Yatzi!");
+        } else {
+            System.out.println("Welcome to Yatzi! Now with hacks 2.0");
+        }
+        while (gameTurns <= 3) {
+            System.out.println("Starting turn " + (gameTurns) + " of 3, rolling dice.");
+            printDie();
+            newRound();
+        }
+    }
+
+    static boolean checkIfYatzi(Die[] dices) {
         for (int i = 1; i < dices.length; i++) {
             if (dices[i].value != dices[i - 1].value) {
                 return false;
@@ -48,61 +68,52 @@ public class YatziMain {
         return true;
     }
 
-    public static void nextRound() {
-        if (!isItYatzi(ds)) {
+    void newRound() {
+        if(!checkIfYatzi(ds)){
             if (gameTurns != 3) {
-                System.out.println("Want to throw again?");
+                System.out.println("Want to throw again? ('y' / 'n')");
                 if (sc.next().equals("y")) {
-                    gameTurns++;
-                    gameIsOn();
+                    ++gameTurns;
+                    rollDie();
                 } else {
-                    System.out.println("See you another time!");
                     System.exit(0);
                 }
             } else {
                 gameOver();
             }
         } else {
-            System.out.println("Wowowowow, you got yatzi in " + ds[0].value + "'s!!!!!");
-            System.exit(0);
+            youGotYatzi();
         }
     }
 
-    static void gameIsOnHax() {
-        while (gameTurns <= 3) {
-            if (gameTurns == 1) {
-                createDices();
-                System.out.println("Welcome to Yatzi with hacks!");
-            }
-            rollDicesAlwaysYatzi();
-            printDices();
-            nextRound();
+    void youGotYatzi() {
+        System.out.println();
+        System.out.println("WOW you YATZI!");
+        System.out.println("You got it in " + ds[0].value + "'s");
+        System.out.println();
+        System.out.println("Want to play again? ('y' / 'hacks')");
+        switch (sc.next()) {
+            case "y" -> new YatziMain(1);
+            case "hacks" -> new YatziMain(2);
+            default -> System.exit(0);
         }
     }
 
-    static void gameIsOn() {
-        while (gameTurns <= 3) {
-            if (gameTurns == 1) {
-                createDices();
-                System.out.println("Welcome to Yatzi!");
-            }
-            rollDices();
-            printDices();
-            nextRound();
+    void gameOver(){
+        System.out.println("Game over! Want to play again? ('y' / 'hacks')");
+        switch (sc.next()) {
+            case "y" -> new YatziMain(1);
+            case "hacks" -> new YatziMain(2);
+            default -> System.exit(0);
         }
     }
 
-    public static void gameOver(){
-        System.out.println("Game over! Want to play again? ('y' for new game, 'hacks' for cheat)");
-        if (sc.next().equals("y")) {
-            gameTurns = 1;
-            gameIsOn();
-        } else if (sc.next().equals("hacks")) {
-            gameTurns = 1;
-            gameIsOnHax();
-        } else {
-            System.out.println("See you another time!");
-            System.exit(0);
+    public static void main(String[] args) {
+        System.out.println("Hello! Do you want to play a game of Yatzi? ('y' / 'hacks')");
+        switch (sc.next()) {
+            case "y" -> new YatziMain(1);
+            case "hacks" -> new YatziMain(2);
+            default -> System.exit(0);
         }
     }
 }
