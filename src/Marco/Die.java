@@ -1,13 +1,17 @@
 package Marco;
 
-public class Die {
-    int value;
+class Die {
+    private int value;
 
-    public void dieRoll() {
+    void dieRoll() {
         this.value = (int)(Math.random()*6+1);
     }
 
     void setDieValue(int v) {
         this.value = v;
+    }
+
+    int getDieValue() {
+        return this.value;
     }
 }
